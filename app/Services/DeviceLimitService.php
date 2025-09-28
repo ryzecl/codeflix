@@ -30,16 +30,18 @@ class DeviceLimitService
         return $device;
     }
 
+    public function logoutDevice($deviceId)
+    {
+        UserDevice::where('device_id', $deviceId)->delete();
+        session()->forget('device_id');
+    }
+
     private function getDeviceInfo()
     {
         return [
             'device_name' => $this->generateDeviceName(),
-            'device_type' => Agent::isDesktop()
-                ? 'desktop'
-                : (Agent::isPhone()
-                    ? 'phone'
-                    : (Agent::isTablet() ? 'tablet' : 'other')),
-
+            'device_type' => Agent::isDesktop() ? 'desktop' : (Agent::isPhone() ? 'phone'
+                : (Agent::isTablet() ? 'tablet' : 'other')),
             'platform' => Agent::platform(),
             'platform_version' => Agent::version(Agent::platform()),
             'browser' => Agent::browser(),
