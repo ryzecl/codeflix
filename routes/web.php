@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +11,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', [MovieController::class, 'index'])->name('movies.index');
+Route::get('/home', [MovieController::class, 'index'])->name('home');
+Route::get('/movies', [MovieController::class, 'all'])->name('movies.index');
+Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search');
+Route::get('/movies/{movie:slug}', [MovieController::class, 'show'])->name('movies.show');
+Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
+
 
 Route::post('/logout', function (Request $request) {
     return app(AuthenticatedSessionController::class)->destroy($request);
